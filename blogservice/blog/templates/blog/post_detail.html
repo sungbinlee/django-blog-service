@@ -16,7 +16,7 @@
     <a href="{% url 'blog:post_delete' post_id=post.id %}">삭제</a>
   {% endif %}
 
-  <!-- 좋아요 -->
+  <!-- 게시글 좋아요 -->
   <form action="{% url 'blog:like_post' post.id %}" method='POST'>
     {% csrf_token %}
     <button style='border:none;'>
@@ -55,6 +55,21 @@
       {{ comment.author }}</p>
     <p>작성일시:
       {{ comment.created_at }}</p>
+    <!-- 댓글 좋아요 -->
+    <form action="{% url 'blog:like_comment' comment.id post.id %}" method='POST'>
+      {% csrf_token %}
+      <button style='border:none;'>
+        {% if request.user in comment.liked_by.all %}
+          <i class="far fa-heart" style="color:red; font-size: 17px;"></i>
+        {% else %}
+          <i class="fas fa-heart" style="color:red; font-size: 17px;"></i>
+        {% endif %}
+      </button>
+      <span class="small">
+        {{ comment.liked_by.all|length }}
+        명이 이 댓글을 좋아합니다.
+      </span>
+    </form>
     {% if user.is_authenticated %}
       {% if comment.author == user %}
         <!-- 로그인한 사용자가 작성한 댓글에 대해서만 수정 폼 표시 -->

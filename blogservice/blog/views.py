@@ -140,3 +140,16 @@ def like_post(request, post_id):
         # 아직 좋아요하지 않은 경우 좋아요 추가
         post.liked_by.add(request.user)
     return redirect('blog:post_detail', post_id=post_id)
+
+@login_required(login_url='user:login')
+@require_POST
+def like_comment(request, comment_id, post_id):
+    comment = Comment.objects.get(id=comment_id)
+    if comment.liked_by.filter(id=request.user.id).exists():
+        # 이미 좋아요한 경우 좋아요 취소
+        comment.liked_by.remove(request.user)
+    else:
+        # 아직 좋아요하지 않은 경우 좋아요 추가
+        comment.liked_by.add(request.user)
+        
+    return redirect('blog:post_detail', post_id=post_id)
