@@ -27,7 +27,7 @@ Django로 개발된 블로그 서비스입니다.
 |   댓글 작성 기능 구현   |                  /blog/int:post_id/comment/create                  | v    |
 |   댓글 수정 기능 구현   |           /blog/int:post_id/comment/edit/int:comment_id            | v    |
 |   댓글 삭제 기능 구현   |          /blog/int:post_id/comment/delete/int:comment_id           | v    |
-|  댓글 좋아요 기능 구현  |           /blog/int:post_id/comment/int:comment_id/like            |      |
+|  댓글 좋아요 기능 구현  |           /blog/int:post_id/comment/int:comment_id/like            | v    |
 | 게시물 좋아요 기능 구현 |                       /blog/int:post_id/like                       | v    |
 |  대댓글 작성 기능 구현  |       /blog/int:post_id/comment/int:comment_id/reply/create        | v    |
 |  대댓글 수정 기능 구현  |  /blog/int:post_id/comment/int:comment_id/reply/edit/int:reply_id  | v    |
