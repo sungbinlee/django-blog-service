@@ -3,6 +3,8 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 
 class CreatePostView(LoginRequiredMixin, View):
@@ -125,3 +127,16 @@ class DeleteCommentView(View):
         post_id = comment.post.id
         comment.delete()
         return redirect('blog:post_detail', post_id=post_id)
+    
+
+@login_required(login_url='user:login')
+@require_POST
+def like_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.liked_by.filter(id=request.user.id).exists():
+        # 이미 좋아요한 경우 좋아요 취소
+        post.liked_by.remove(request.user)
+    else:
+        # 아직 좋아요하지 않은 경우 좋아요 추가
+        post.liked_by.add(request.user)
+    return redirect('blog:post_detail', post_id=post_id)

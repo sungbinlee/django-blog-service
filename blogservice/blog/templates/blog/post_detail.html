@@ -16,52 +16,69 @@
     <a href="{% url 'blog:post_delete' post_id=post.id %}">삭제</a>
   {% endif %}
 
-  <h2>댓글</h2>
-  <!-- 최상위 댓글 작성 폼 -->
-  {% if user.is_authenticated %}
-    <form method="post" action="{% url 'blog:create_comment' post_id=post.id %}">
-      {% csrf_token %}
-      {{ comment_form.as_p }}
-      <button type="submit">댓글 작성</button>
-    </form>
-  {% else %}
-    <!-- 로그인을 유도하는 메시지 표시 -->
-    <p>댓글을 작성하려면
-      <a href="{% url 'user:login' %}">로그인</a>이 필요합니다.</p>
-  {% endif %}
+  <!-- 좋아요 -->
+  <form action="{% url 'blog:like_post' post.id %}" method='POST'>
+    {% csrf_token %}
+    <button style='border:none;'>
+      {% if request.user in post.liked_by.all %}
+        <i class="far fa-heart" style="color:red; font-size: 17px;"></i>
+      {% else %}
+        <i class="fas fa-heart" style="color:red; font-size: 17px;"></i>
+      {% endif %}
+    </button>
+    <span class="small">
+      {{ post.liked_by.all|length }}
+      명이 이 글을 좋아합니다.
+    </span>
+  </p>
+</form>
 
-  {% for comment in post.comment_set.all %}
-    <!-- 댓글 내용 -->
-    <div class="comment">
-      <p>{{ comment.content }}</p>
-      <p>작성자:
-        {{ comment.author }}</p>
-      <p>작성일시:
-        {{ comment.created_at }}</p>
-      {% if user.is_authenticated %}
-        {% if comment.author == user %}
-          <!-- 로그인한 사용자가 작성한 댓글에 대해서만 수정 폼 표시 -->
-          <form method="post" action="{% url 'blog:update_comment' comment_id=comment.id %}">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit">수정</button>
-          </form>
-        {% endif %}
+<h2>댓글</h2>
+<!-- 최상위 댓글 작성 폼 -->
+{% if user.is_authenticated %}
+  <form method="post" action="{% url 'blog:create_comment' post_id=post.id %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">댓글 작성</button>
+  </form>
+{% else %}
+  <!-- 로그인을 유도하는 메시지 표시 -->
+  <p>댓글을 작성하려면
+    <a href="{% url 'user:login' %}">로그인</a>이 필요합니다.</p>
+{% endif %}
 
-        <!-- 대댓글 작성 폼 -->
-        <form method="post" action="{% url 'blog:create_comment' post_id=post.id %}">
+{% for comment in post.comment_set.all %}
+  <!-- 댓글 내용 -->
+  <div class="comment">
+    <p>{{ comment.content }}</p>
+    <p>작성자:
+      {{ comment.author }}</p>
+    <p>작성일시:
+      {{ comment.created_at }}</p>
+    {% if user.is_authenticated %}
+      {% if comment.author == user %}
+        <!-- 로그인한 사용자가 작성한 댓글에 대해서만 수정 폼 표시 -->
+        <form method="post" action="{% url 'blog:update_comment' comment_id=comment.id %}">
           {% csrf_token %}
           {{ comment_form.as_p }}
-          <input type="hidden" name="parent_comment_id" value="{{ comment.id }}">
-          <button type="submit">대댓글 작성</button>
+          <button type="submit">수정</button>
         </form>
       {% endif %}
 
-      <!-- 대댓글 목록 -->
-      {% for reply in comment.comment_set.all %}
-        <!-- 대댓글 내용 -->
-        {{ reply.content }}
-      {% endfor %}
-    {% endfor %}
+      <!-- 대댓글 작성 폼 -->
+      <form method="post" action="{% url 'blog:create_comment' post_id=post.id %}">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="hidden" name="parent_comment_id" value="{{ comment.id }}">
+        <button type="submit">대댓글 작성</button>
+      </form>
+    {% endif %}
 
-  {% endblock %}
+    <!-- 대댓글 목록 -->
+    {% for reply in comment.comment_set.all %}
+      <!-- 대댓글 내용 -->
+      {{ reply.content }}
+    {% endfor %}
+  {% endfor %}
+
+{% endblock %}
