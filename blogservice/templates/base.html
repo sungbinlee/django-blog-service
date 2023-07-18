@@ -10,7 +10,9 @@
     <header>
       <!-- 네비게이션 바 또는 로고 등의 내용 -->
       <a href="/">홈</a>
-      <a href="/register">회원가입</a>
+      <a href="{% url 'user:login' %}">로그인</a>
+      <a href="{% url 'user:register' %}">회원가입</a>
+      <a href="{% url 'user:logout' %}">로그아웃</a>
     </header>
 
     <main>
