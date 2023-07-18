@@ -3,6 +3,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <a href="{% url 'blog:post_create' %}">글 쓰기</a>
   <h1>글 목록</h1>
   {% if posts %}
     <ul>

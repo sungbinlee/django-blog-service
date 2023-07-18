@@ -10,7 +10,7 @@ class CreatePostView(View):
         context = {
             'form': form
         }
-        return render(request, 'blog/create_post.html', context)
+        return render(request, 'blog/post_create.html', context)
 
     def post(self, request):
         form = PostForm(request.POST)
@@ -23,7 +23,7 @@ class CreatePostView(View):
             context = {
                 'form': form
             }
-            return render(request, 'blog/create_post.html', context)
+            return render(request, 'blog/post_create.html', context)
 
 class PostListView(View):
     def get(self, request):

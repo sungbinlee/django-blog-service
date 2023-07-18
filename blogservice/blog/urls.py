@@ -7,6 +7,6 @@ urlpatterns = [
     # 글목록 조회
     path('', PostListView.as_view(), name='post_list'),
     # 글 생성
-    path('post/create/', CreatePostView.as_view(), name='create_post'),
+    path('post/create/', CreatePostView.as_view(), name='post_create'),
     
 ]
