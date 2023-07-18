@@ -29,6 +29,7 @@ class Image(models.Model):
     def __str__(self):
         return f"Image for post: {self.post.title}"
 
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
