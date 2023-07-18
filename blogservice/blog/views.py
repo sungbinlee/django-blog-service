@@ -48,41 +48,36 @@ class PostDetailView(View):
 
 class PostUpdateView(View):
     def get(self, request, post_id):
-        # 글 수정 폼 보여주기
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id, author=request.user)
         form = PostForm(instance=post)
         context = {
-            'post': post,
-            'form': form
+            'form': form,
+            'post': post
         }
         return render(request, 'blog/post_update.html', context)
 
     def post(self, request, post_id):
-        # 글 수정 처리
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id, author=request.user)
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
             return redirect('blog:post_detail', post_id=post.id)
         else:
             context = {
-                'post': post,
-                'form': form
+                'form': form,
+                'post': post
             }
             return render(request, 'blog/post_update.html', context)
 
-
 class PostDeleteView(View):
     def get(self, request, post_id):
-        # 글 삭제 확인 페이지 보여주기
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id, author=request.user)
         context = {
             'post': post
         }
         return render(request, 'blog/post_delete.html', context)
 
     def post(self, request, post_id):
-        # 글 삭제 처리
-        post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id, author=request.user)
         post.delete()
         return redirect('blog:post_list')
