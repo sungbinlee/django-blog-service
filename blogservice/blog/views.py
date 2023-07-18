@@ -88,14 +88,26 @@ class PostDeleteView(View):
 
 class CreateCommentView(View):
     def post(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
+        post = Post.objects.get(id=post_id)
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-        return redirect('blog:post_detail', post_id=post.id)
+            content = form.cleaned_data['content']
+            parent_comment_id = request.POST.get('parent_comment_id')  # 대댓글인 경우 부모 댓글의 ID를 가져옴
+            if parent_comment_id:
+                parent_comment = Comment.objects.get(id=parent_comment_id)
+                Comment.objects.create(
+                    post=post,
+                    parent_comment=parent_comment,  # 부모 댓글 설정
+                    author=request.user,
+                    content=content
+                )
+            else:
+                Comment.objects.create(
+                    post=post,
+                    author=request.user,
+                    content=content
+                )
+            return redirect('blog:post_detail', post_id=post.id)
 
 
 class UpdateCommentView(View):
