@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .forms import PostForm
-from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import PostForm, CommentForm
+from .models import Post, Comment
 
 
-class CreatePostView(View):
+class CreatePostView(LoginRequiredMixin, View):
     def get(self, request):
         form = PostForm()
         context = {
@@ -40,8 +41,10 @@ class PostDetailView(View):
     def get(self, request, post_id):
         # 글 상세 조회
         post = get_object_or_404(Post, id=post_id)
+        comment_form = CommentForm()
         context = {
-            'post': post
+            'post': post,
+            'comment_form': comment_form,
         }
         return render(request, 'blog/post_detail.html', context)
 
@@ -81,3 +84,32 @@ class PostDeleteView(View):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         post.delete()
         return redirect('blog:post_list')
+    
+
+class CreateCommentView(View):
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+        return redirect('blog:post_detail', post_id=post.id)
+
+
+class UpdateCommentView(View):
+    def post(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+        return redirect('blog:post_detail', post_id=comment.post.id)
+
+
+class DeleteCommentView(View):
+    def post(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        post_id = comment.post.id
+        comment.delete()
+        return redirect('blog:post_detail', post_id=post_id)
