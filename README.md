@@ -4,6 +4,8 @@ Django로 개발된 블로그 서비스입니다.
 ## Use case diagram
 ![blog_use_case](https://github.com/sungbinlee/django-blog-service/assets/52542229/d2b3ac11-4a17-47f3-a252-cc6189ed0476)
 
+추가기능: 게시글 좋아요, 댓글 좋아요
+
 ## ER diagram
 ![ERDblog](https://github.com/sungbinlee/django-blog-service/assets/52542229/70aa98f9-7ea9-45e6-854f-766ba31f4c82)
 
