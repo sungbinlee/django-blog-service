@@ -1,0 +1,27 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>My Blog</title>
+  </head>
+
+  <body>
+    <header>
+      <!-- 네비게이션 바 또는 로고 등의 내용 -->
+      <a href="/">홈</a>
+      <a href="/register">회원가입</a>
+    </header>
+
+    <main>
+      {% block content %}
+        <!-- 하위 템플릿에서 채워질 내용 -->
+      {% endblock %}
+    </main>
+
+    <footer>
+      <!-- 푸터 내용 -->
+    </footer>
+  </body>
+
+</html>
