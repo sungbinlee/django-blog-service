@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import CreatePostView, PostListView, PostDetailView, PostUpdateView, PostDeleteView, CreateCommentView, UpdateCommentView, DeleteCommentView, like_post, like_comment, PostSearchView
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'blog'
 
@@ -22,3 +24,6 @@ urlpatterns = [
 
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -21,6 +21,15 @@
   <p>조회수:
     {{ post.views }}</p>
 
+  {% if post.images.all %}
+    <h2>이미지</h2>
+    <div class="post-images">
+      {% for image in post.images.all %}
+        <img src="{{ image.file_path.url }}" alt="{{ image.file_path }}" class="post-image">
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {% if post.author == request.user %}
     <a href="{% url 'blog:post_update' post_id=post.id %}">수정</a>
     <a href="{% url 'blog:post_delete' post_id=post.id %}">삭제</a>

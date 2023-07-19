@@ -29,14 +29,13 @@ class Post(models.Model):
     liked_by = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     views = models.PositiveIntegerField(default=0)
 
-
     def __str__(self):
         return self.title
     
 
 class Image(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    file_path = models.CharField(max_length=255)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
+    file_path = models.ImageField(upload_to='images/')
 
     def __str__(self):
         return f"Image for post: {self.post.title}"

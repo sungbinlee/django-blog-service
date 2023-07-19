@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ImageForm
 from .models import Post, Comment, Tag
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -11,17 +11,24 @@ from django.views.generic import ListView
 class CreatePostView(LoginRequiredMixin, View):
     def get(self, request):
         form = PostForm()
+        image_form = ImageForm()
         context = {
-            'form': form
+            'form': form,
+            'image_form': image_form
         }
         return render(request, 'blog/post_create.html', context)
 
     def post(self, request):
         form = PostForm(request.POST)
-        if form.is_valid():
+        image_form = ImageForm(request.POST, request.FILES)
+        if form.is_valid() and image_form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+
+            image = image_form.save(commit=False)
+            image.post = post
+            image.save()
 
             # 태그 처리
             tags = form.cleaned_data.get('tags')
@@ -33,7 +40,8 @@ class CreatePostView(LoginRequiredMixin, View):
             return redirect('blog:post_detail', post_id=post.id)
         else:
             context = {
-                'form': form
+                'form': form,
+                'image_form': image_form
             }
             return render(request, 'blog/post_create.html', context)
 
@@ -67,7 +75,7 @@ class PostUpdateView(View):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         cleaned_tags = ', '.join(tag.name for tag in post.tags.all())
         form = PostForm(instance=post, initial={'tags': cleaned_tags})
-        tags = post.tags.all() 
+        tags = post.tags.all()
         context = {
             'form': form,
             'post': post,
