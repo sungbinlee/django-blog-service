@@ -11,6 +11,9 @@
     {{ post.created_at }}</p>
   <p>수정일시:
     {{ post.updated_at }}</p>
+  <p>조회수:
+    {{ post.views }}</p>
+
   {% if post.author == request.user %}
     <a href="{% url 'blog:post_update' post_id=post.id %}">수정</a>
     <a href="{% url 'blog:post_delete' post_id=post.id %}">삭제</a>

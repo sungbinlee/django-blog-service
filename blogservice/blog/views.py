@@ -43,6 +43,8 @@ class PostDetailView(View):
     def get(self, request, post_id):
         # 글 상세 조회
         post = get_object_or_404(Post, id=post_id)
+        post.views += 1
+        post.save()
         comment_form = CommentForm()
         context = {
             'post': post,
