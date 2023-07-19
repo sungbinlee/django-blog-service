@@ -21,7 +21,7 @@ Django로 개발된 블로그 서비스입니다.
 |  게시글 작성 기능 구현  |                            /blog/write                             | v    |
 |  게시글 목록 기능 구현  |                               /blog                                | v    |
 |  게시글 상세보기 기능   |                         /blog/int:post_id                          | v    |
-|  게시글 검색 기능 구현  |                        /blog/search/str:tag                        |      |
+|  게시글 검색 기능 구현  |                        /blog/search/str:tag                        | v    |
 |  게시글 수정 기능 구현  |                       /blog/edit/int:post_id                       | v    |
 |  게시글 삭제 기능 구현  |                      /blog/delete/int:post_id                      | v    |
 |   댓글 작성 기능 구현   |                  /blog/int:post_id/comment/create                  | v    |
