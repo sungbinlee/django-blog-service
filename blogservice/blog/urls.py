@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreatePostView, PostListView, PostDetailView, PostUpdateView, PostDeleteView, CreateCommentView, UpdateCommentView, DeleteCommentView, like_post, like_comment
+from .views import CreatePostView, PostListView, PostDetailView, PostUpdateView, PostDeleteView, CreateCommentView, UpdateCommentView, DeleteCommentView, like_post, like_comment, PostSearchView
 
 app_name = 'blog'
 
@@ -18,5 +18,7 @@ urlpatterns = [
     # 좋아요
     path('<int:post_id>/like/', like_post, name='like_post'),
     path('comment/<int:comment_id>/like/<int:post_id>', like_comment, name='like_comment'),
+    path('search/', PostSearchView.as_view(), name='search_post'),
+
 
 ]

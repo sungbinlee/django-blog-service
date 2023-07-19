@@ -4,6 +4,13 @@
 
 {% block content %}
   <a href="{% url 'blog:post_create' %}">글 쓰기</a>
+  <div class="container">
+    <!-- 검색 폼 추가 -->
+    <form method="get" action="{% url 'blog:search_post' %}">
+      <input type="text" name="q" placeholder="검색어를 입력하세요">
+      <button type="submit">검색</button>
+    </form>
+  </div>
   <h1>글 목록</h1>
   {% if posts %}
     <ul>

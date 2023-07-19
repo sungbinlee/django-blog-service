@@ -5,6 +5,7 @@ from .forms import PostForm, CommentForm
 from .models import Post, Comment, Tag
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.views.generic import ListView
 
 
 class CreatePostView(LoginRequiredMixin, View):
@@ -178,3 +179,20 @@ def like_comment(request, comment_id, post_id):
         comment.liked_by.add(request.user)
         
     return redirect('blog:post_detail', post_id)
+
+
+class PostSearchView(ListView):
+    model = Post
+    template_name = 'blog/post_search_results.html'
+    context_object_name = 'posts'
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        posts = Post.objects.filter(title__icontains=query) | Post.objects.filter(tags__name__icontains=query)
+        return posts.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q')
+        return context
