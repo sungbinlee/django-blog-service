@@ -35,3 +35,5 @@ Django로 개발된 블로그 서비스입니다.
 |        태그 추가        |                     /blog/int:post_id/tag/add                      |      |
 |        태그 삭제        |              /blog/int:post_id/tag/delete/int:tag_id               |      |
 |        태그 수정        |               /blog/int:post_id/tag/edit/int:tag_id                |      |
+|         조회 수         |                                N/A                                 | V    |
+|        사진 첨부        |                                N/A                                 |      |
