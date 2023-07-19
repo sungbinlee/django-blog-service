@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 
@@ -21,6 +21,14 @@ class CreatePostView(LoginRequiredMixin, View):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+
+            # 태그 처리
+            tags = form.cleaned_data.get('tags')
+            if tags:
+                for tag_name in tags:
+                    tag, _ = Tag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
             return redirect('blog:post_detail', post_id=post.id)
         else:
             context = {
@@ -56,10 +64,13 @@ class PostDetailView(View):
 class PostUpdateView(View):
     def get(self, request, post_id):
         post = get_object_or_404(Post, id=post_id, author=request.user)
-        form = PostForm(instance=post)
+        cleaned_tags = ', '.join(tag.name for tag in post.tags.all())
+        form = PostForm(instance=post, initial={'tags': cleaned_tags})
+        tags = post.tags.all() 
         context = {
             'form': form,
-            'post': post
+            'post': post,
+            'tags': tags
         }
         return render(request, 'blog/post_update.html', context)
 
@@ -67,8 +78,20 @@ class PostUpdateView(View):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
-            form.save()
-            return redirect('blog:post_detail', post_id=post.id)
+            new_post = form.save(commit=False)
+            new_post.save()
+
+            # 태그 업데이트
+            tags = request.POST.get('tags')  # 요청에서 태그 가져오기
+            tag_names = [tag.strip() for tag in tags.split(',')]
+
+            # 기존 태그 삭제 및 새로운 태그 추가
+            new_post.tags.clear()
+            for tag_name in tag_names:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                new_post.tags.add(tag)
+
+            return redirect('blog:post_detail', post_id=post_id)
         else:
             context = {
                 'form': form,

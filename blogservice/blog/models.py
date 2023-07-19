@@ -25,7 +25,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag, through='PostTag')
+    tags = models.ManyToManyField(Tag, blank=True)
     liked_by = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     views = models.PositiveIntegerField(default=0)
 
