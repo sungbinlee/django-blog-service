@@ -152,4 +152,4 @@ def like_comment(request, comment_id, post_id):
         # 아직 좋아요하지 않은 경우 좋아요 추가
         comment.liked_by.add(request.user)
         
-    return redirect('blog:post_detail', post_id=post_id)
+    return redirect('blog:post_detail', post_id)

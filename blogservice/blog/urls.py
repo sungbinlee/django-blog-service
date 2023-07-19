@@ -17,6 +17,6 @@ urlpatterns = [
     path('comment/<int:comment_id>/delete/', DeleteCommentView.as_view(), name='delete_comment'),
     # 좋아요
     path('<int:post_id>/like/', like_post, name='like_post'),
-    path('<int:post_id>/comment/<int:comment_id>/like/', like_comment, name='like_comment'),
+    path('comment/<int:comment_id>/like/<int:post_id>/', like_comment, name='like_comment'),
 
 ]
