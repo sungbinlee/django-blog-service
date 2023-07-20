@@ -191,13 +191,16 @@ def like_comment(request, comment_id, post_id):
 
 class PostSearchView(ListView):
     model = Post
-    template_name = 'blog/post_search_results.html'
+    template_name = 'blog/search_results.html'
     context_object_name = 'posts'
     paginate_by = 10
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        posts = Post.objects.filter(title__icontains=query) | Post.objects.filter(tags__name__icontains=query)
+        if query:
+            posts = Post.objects.filter(title__icontains=query) | Post.objects.filter(tags__name__icontains=query)
+        else:
+            posts = Post.objects.none()
         return posts.order_by('-created_at')
 
     def get_context_data(self, **kwargs):

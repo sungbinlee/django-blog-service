@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <a href="{% url 'blog:post_create' %}" class="btn btn-primary">글 쓰기</a>
+    <div class="mt-3">
+      <!-- 검색 폼 추가 -->
+      <form method="get" action="{% url 'blog:search_post' %}" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <input type="text" name="q" class="form-control" placeholder="검색어를 입력하세요">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">검색</button>
+      </form>
+    </div>
+    <h1>검색 결과</h1>
+    {% if posts %}
+      <ul class="list-group mt-3">
+        {% for post in posts %}
+          <li class="list-group-item">
+            <a href="{% url 'blog:post_detail' post_id=post.id %}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="mt-3">검색 결과가 없습니다.</p>
+    {% endif %}
+  </div>
+{% endblock %}
