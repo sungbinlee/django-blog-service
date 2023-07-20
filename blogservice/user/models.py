@@ -48,7 +48,7 @@ class User(AbstractUser):
     data_joined = models.DateTimeField(auto_now_add=True)
     social_provider = models.CharField(max_length=255, blank=True)
     social_id = models.CharField(max_length=255, blank=True)
-    profile_picture = models.CharField(max_length=255, blank=True)
+    profile_picture = models.ImageField(upload_to='images/', blank=True)
     introduction = models.TextField(blank=True)
 
     USERNAME_FIELD = 'email'
@@ -56,5 +56,5 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name

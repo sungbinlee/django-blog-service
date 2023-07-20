@@ -49,7 +49,7 @@
             <ul class="navbar-nav">
               {% if user.is_authenticated %}
                 <li class="nav-item">
-                  <img src="{% if user.images.first %}{{ user.images.first.file_path.url }}{% else %}{% static 'img/user_placeholder.png' %}{% endif %}" alt="User Profile img" class="img-fluid rounded-circle border border-gray" style="width: 40px; height: 40px;">
+                  <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'img/user_placeholder.png' %}{% endif %}" alt="User Profile img" class="img-fluid rounded-circle border border-gray" style="width: 40px; height: 40px; object-fit: cover;">
                 </li>
                 <li class="nav-item dropdown ms-1">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,7 +60,7 @@
                       <a class="dropdown-item" href="{% url 'user:logout' %}">Logout</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">프로필수정</a>
+                      <a class="dropdown-item" href="{% url 'user:profile_update' %}">프로필수정</a>
                     </li>
                     <li>
                       <hr class="dropdown-divider">

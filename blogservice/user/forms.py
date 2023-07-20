@@ -59,3 +59,12 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': '이메일'})
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': '비밀번호'})
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'profile_picture', 'introduction']
+        widgets = {
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
+        }

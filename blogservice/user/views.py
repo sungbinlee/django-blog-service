@@ -3,7 +3,11 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from .models import User
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, UserUpdateForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+
+
 
 # Create your views here.
 # user 관련된 기능
@@ -38,7 +42,7 @@ class Registration(View):
                 'title': 'User'
             }
             return render(request, 'user/register.html', context)
-        
+
 
 # Login
 class Login(View):
@@ -81,3 +85,26 @@ class Logout(View):
     def get(self, request):
         logout(request)
         return redirect('/')
+    
+
+class ProfileUpdateView(LoginRequiredMixin, View):
+    template_name = 'user/profile_update.html'
+
+    def get(self, request):
+        form = UserUpdateForm(instance=request.user)
+        context = {
+            'form': form
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully.')
+            return redirect('/')  # Redirect back to the same page after updating
+        
+        context = {
+            'form': form
+        }
+        return render(request, self.template_name, context)

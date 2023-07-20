@@ -2,30 +2,30 @@
 
 {% block content %}
   <div class="container mt-4">
-    <h1>Create Post</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>글 쓰기</h1>
+    <form class="py-1" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-group">
-        <label for="{{ form.title.id_for_label }}">Title</label>
-        {{ form.title }}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.content.id_for_label }}">Content</label>
-        {{ form.content }}
-      </div>
-      <div class="form-group">
-        <label for="{{ form.category.id_for_label }}">Category</label>
+        <label for="{{ form.category.id_for_label }}">카테고리</label>
         {{ form.category }}
       </div>
       <div class="form-group">
-        <label for="{{ form.tags.id_for_label }}">Tags</label>
+        <label for="{{ form.title.id_for_label }}">제목</label>
+        {{ form.title }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">본문</label>
+        {{ form.content }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.tags.id_for_label }}">태그</label>
         {{ form.tags }}
       </div>
       <div class="form-group">
-        <label for="{{ image_form.file_path.id_for_label }}">Image</label>
+        <label for="{{ image_form.file_path.id_for_label }}">이미지</label>
         {{ image_form.file_path }}
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary mt-3">작성</button>
     </form>
   </div>
 {% endblock %}
