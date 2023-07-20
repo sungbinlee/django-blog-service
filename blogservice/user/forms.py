@@ -2,6 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # from .models import User
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password, password_validators_help_text_html
+from django.core.exceptions import ValidationError
+
 
 
 User = get_user_model()
@@ -18,6 +21,31 @@ class RegisterForm(UserCreationForm):
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
         self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('이미 사용 중인 이메일 주소입니다.')
+        return email
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError('비밀번호가 일치하지 않습니다.')
+
+        try:
+            validate_password(password1, self.instance)
+        except ValidationError as error:
+            self.add_error('password1', error)
+
+        return cleaned_data
+    
+    def add_password_validation_help_text(self):
+        help_text = password_validators_help_text_html()
+        self.fields['password1'].help_text = help_text
 
 
 

@@ -32,6 +32,12 @@ class Registration(View):
             user = form.save()
             # 로그인한 다음 이동
             return redirect('/')
+        else:
+            context = {
+                'form': form,
+                'title': 'User'
+            }
+            return render(request, 'user/register.html', context)
         
 
 # Login
