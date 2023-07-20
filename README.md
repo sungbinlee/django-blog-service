@@ -3,7 +3,6 @@
 Django로 개발된 블로그 서비스입니다.
 
 ## Use case diagram
-
 ![blog_use_case](https://github.com/sungbinlee/django-blog-service/assets/52542229/d2b3ac11-4a17-47f3-a252-cc6189ed0476)
 
 추가기능: 게시글 좋아요, 댓글 좋아요
@@ -37,5 +36,4 @@ Django로 개발된 블로그 서비스입니다.
 |     태그 추가, 삭제     |                                N/A                                 | V    |
 |         조회 수         |                                N/A                                 | V    |
 |        사진 첨부        |                                N/A                                 |  v  |
-|       프로필 설정       |                                N/A                                 |   v |
-=======
+|       프로필 설정       |                         profile/update/                             |   v |
