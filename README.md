@@ -37,3 +37,36 @@ Django로 개발된 블로그 서비스입니다.
 |         조회 수         |                                N/A                                 | V    |
 |        사진 첨부        |                                N/A                                 |  v  |
 |       프로필 설정       |                         profile/update/                             |   v |
+
+## 설치 및 실행
+
+1. 해당 프로젝트를 클론합니다.
+
+```
+git clone https://github.com/sungbinlee/django-blog-service.git
+```
+
+2. 가상환경을 생성하고 필요한 패키지를 설치합니다:
+
+```
+python -m venv venv
+source venv/bin/activate  # Windows에서는 "venv\Scripts\activate" 실행
+pip install -r requirements.txt
+```
+
+3. 데이터베이스를 마이그레이션합니다:
+
+```
+python manage.py migrate
+```
+
+4. 개발 서버를 실행합니다:
+
+```
+python manage.py runserver
+```
+
+서버가 성공적으로 실행되면 브라우저에서 http://localhost:8000/ 으로 접속하여 블로그 웹 애플리케이션을 사용할 수 있습니다.
+
+
+
