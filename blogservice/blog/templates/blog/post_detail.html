@@ -37,7 +37,20 @@
   {% endif %}
 
   <!-- 게시글 좋아요 -->
-  <!-- ... (rest of the like button code) ... -->
+  <form action="{% url 'blog:like_post' post.id %}" method='POST'>
+    {% csrf_token %}
+    <button type="submit" class="btn btn-link" style="border:none;">
+      {% if request.user in post.liked_by.all %}
+        <i class="far fa-heart" style="color:red; font-size: 17px;"></i>
+      {% else %}
+        <i class="fas fa-heart" style="color:red; font-size: 17px;"></i>
+      {% endif %}
+    </button>
+    <span class="small">
+      {{ post.liked_by.all|length }}
+      명이 이 글을 좋아합니다.
+    </span>
+  </form>
 
   <h2 class="mt-4">댓글</h2>
   <!-- 최상위 댓글 작성 폼 -->
@@ -63,7 +76,20 @@
         <p>작성일시:
           {{ comment.created_at }}</p>
         <!-- 댓글 좋아요 -->
-        <!-- ... (rest of the like button code for comments) ... -->
+        <form action="{% url 'blog:like_comment' comment.id post.id %}" method='POST'>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link" style="border:none;">
+            {% if request.user in comment.liked_by.all %}
+              <i class="far fa-heart" style="color:red; font-size: 17px;"></i>
+            {% else %}
+              <i class="fas fa-heart" style="color:red; font-size: 17px;"></i>
+            {% endif %}
+          </button>
+          <span class="small">
+            {{ comment.liked_by.all|length }}
+            명이 이 댓글을 좋아합니다.
+          </span>
+        </form>
 
         {% if user.is_authenticated %}
           {% if comment.author == user %}
