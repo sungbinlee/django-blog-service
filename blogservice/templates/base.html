@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  {% load static %}
 
   <head>
     <title>My Blog</title>
@@ -29,7 +30,7 @@
               {% if user.is_authenticated %}
 
                 <li class="nav-item">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp" alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark" style="width: 40px;">
+                  <img src="{% if user.images.first %}{{ user.images.first.file_path.url }}{% else %}{% static 'img/user_placeholder.png' %}{% endif %}" alt="User Profile img" class="img-fluid rounded-circle border border-gray" style="width: 40px; height: 40px;">
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
