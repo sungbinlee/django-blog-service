@@ -105,6 +105,14 @@
                 {{ comment.content }}
               </p>
             </div>
+            {% if user.is_authenticated and comment.author == user %}
+              <form method="post" action="{% url 'blog:delete_comment' comment_id=comment.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn text-danger">
+                  <strong>X</strong>
+                </button>
+              </form>
+            {% endif %}
           </div>
           <!-- 댓글 좋아요 -->
           <form action="{% url 'blog:like_comment' comment.id post.id %}" method='POST'>
@@ -164,6 +172,14 @@
                       {{ reply.content }}
                     </p>
                   </div>
+                  {% if user.is_authenticated and reply.author == user %}
+                    <form method="post" action="{% url 'blog:delete_comment' comment_id=reply.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn text-danger">
+                        <strong>X</strong>
+                      </button>
+                    </form>
+                  {% endif %}
                 </div>
               </div>
               <!-- 댓글 좋아요 -->
