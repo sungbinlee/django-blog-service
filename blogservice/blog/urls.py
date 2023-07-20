@@ -1,7 +1,5 @@
 from django.urls import path
-from .views import CreatePostView, PostListView, PostDetailView, PostUpdateView, PostDeleteView, CreateCommentView, UpdateCommentView, DeleteCommentView, like_post, like_comment, PostSearchView
-from django.conf import settings
-from django.conf.urls.static import static
+from .views import CreatePostView, PostListView, PostDetailView, PostUpdateView, PostDeleteView, CreateCommentView, UpdateCommentView, DeleteCommentView, like_post, like_comment, PostSearchView, PostSearchByCategoryView
 
 app_name = 'blog'
 
@@ -21,9 +19,7 @@ urlpatterns = [
     path('<int:post_id>/like/', like_post, name='like_post'),
     path('comment/<int:comment_id>/like/<int:post_id>', like_comment, name='like_comment'),
     path('search/', PostSearchView.as_view(), name='search_post'),
-
+    path('search/category/<int:category_id>/', PostSearchByCategoryView.as_view(), name='search_by_category'),
 
 ]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

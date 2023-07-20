@@ -52,11 +52,9 @@ class PostListView(View):
     def get(self, request):
         # 글 목록 조회
         posts = Post.objects.all().order_by('-created_at')
-        categories = Category.objects.all()
 
         context = {
-            'posts': posts,
-            'categories': categories
+            'posts': posts
         }
         return render(request, 'blog/post_list.html', context)
 
@@ -210,4 +208,25 @@ class PostSearchView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q')
+        return context
+    
+
+class PostSearchByCategoryView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        if category_id:
+            return Post.objects.filter(category_id=category_id).order_by('-created_at')
+        else:
+            return Post.objects.none()
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        if category_id:
+            category = get_object_or_404(Category, id=category_id)
+            context['selected_category'] = category
         return context
