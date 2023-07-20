@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm, CommentForm, ImageForm
-from .models import Post, Comment, Tag
+from .models import Post, Comment, Tag, Category
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
+from django.db.models import Q
 
 
 class CreatePostView(LoginRequiredMixin, View):
@@ -51,8 +52,11 @@ class PostListView(View):
     def get(self, request):
         # 글 목록 조회
         posts = Post.objects.all().order_by('-created_at')
+        categories = Category.objects.all()
+
         context = {
-            'posts': posts
+            'posts': posts,
+            'categories': categories
         }
         return render(request, 'blog/post_list.html', context)
 
@@ -194,12 +198,11 @@ class PostSearchView(ListView):
     model = Post
     template_name = 'blog/search_results.html'
     context_object_name = 'posts'
-    paginate_by = 10
 
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            posts = Post.objects.filter(title__icontains=query) | Post.objects.filter(tags__name__icontains=query)
+            posts = Post.objects.filter(Q(title__icontains=query) | Q(tags__name__icontains=query)).distinct()
         else:
             posts = Post.objects.none()
         return posts.order_by('-created_at')
