@@ -33,12 +33,16 @@
             views
           </span>
         </p>
-        <p class="card-text p-4">{{ post.content }}</p>
-        {% if post.images.all %}
-          {% for image in post.images.all %}
-            <img src="{{ image.file_path.url }}" alt="{{ image.file_path }}" class="post-image img-thumbnail">
-          {% endfor %}
-        {% endif %}
+        <div class="px-3">
+          <p class="card-text p-2 ">{{ post.content|linebreaks }}</p>
+        </div>
+        <div class="text-center">
+          {% if post.images.all %}
+            {% for image in post.images.all %}
+              <img src="{{ image.file_path.url }}" alt="{{ image.file_path }}" class="post-image img-thumbnail">
+            {% endfor %}
+          {% endif %}
+        </div>
 
         <div class="d-flex align-items-center justify-content-center mt-3">
           <form action="{% url 'blog:like_post' post.id %}" method="POST">
