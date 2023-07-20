@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>글 수정</h1>
-  <form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {{ image_form.as_p }}
-    <input type="submit" value="저장">
-  </form>
+  <div class="container">
+    <h1 class="my-4">글 수정</h1>
+    <form method="post" action="" class="my-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {{ image_form.as_p }}
+      <button type="submit" class="btn btn-primary">저장</button>
+    </form>
+  </div>
 {% endblock %}
