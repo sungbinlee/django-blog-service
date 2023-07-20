@@ -14,13 +14,14 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'name']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
-        self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
-        self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': '이메일'})
+        self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': '이름'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': '비밀번호'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': '비밀번호 확인'})
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -64,7 +65,8 @@ class LoginForm(AuthenticationForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'email', 'profile_picture', 'introduction']
+        fields = ['name', 'profile_picture', 'introduction']
         widgets = {
-            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'introduction': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
