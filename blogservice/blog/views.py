@@ -27,9 +27,10 @@ class CreatePostView(LoginRequiredMixin, View):
             post.author = request.user
             post.save()
 
-            image = image_form.save(commit=False)
-            image.post = post
-            image.save()
+            if request.FILES.get('file_path'):
+                image = image_form.save(commit=False)
+                image.post = post
+                image.save()
 
             # 태그 처리
             tags = form.cleaned_data.get('tags')

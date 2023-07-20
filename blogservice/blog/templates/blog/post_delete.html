@@ -2,12 +2,16 @@
 
 {% block content %}
   <div class="container">
-    <h1 class="my-4">글 삭제 확인</h1>
-    <p>다음 글을 삭제하시겠습니까?</p>
-    <h2 class="my-3">{{ post.title }}</h2>
-    <form method="post" action="" class="my-4">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">삭제</button>
-    </form>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h1 class="my-4 text-center">글 삭제 확인</h1>
+        <p class="text-center">다음 글을 삭제하시겠습니까?</p>
+        <h2 class="my-3 text-center">{{ post.title }}</h2>
+        <form method="post" action="" class="my-4 text-center">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">삭제</button>
+        </form>
+      </div>
+    </div>
   </div>
 {% endblock %}

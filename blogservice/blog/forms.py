@@ -33,3 +33,7 @@ class ImageForm(forms.ModelForm):
         widgets = {
             'file_path': forms.FileInput(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['file_path'].required = False
