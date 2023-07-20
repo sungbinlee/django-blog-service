@@ -32,6 +32,9 @@
                 <img src="{% if post.images.first %}{{ post.images.first.file_path.url }}{% else %}{% static 'img/placeholder.jpg' %}{% endif %}" class="card-img-top" alt="{{ post.title }}">
               </a>
               <div class="card-body">
+                <p class="card-text text-center">
+                  {{ post.category }}
+                </p>
                 <h5 class="card-title">
                   <a href="{% url 'blog:post_detail' post_id=post.id %}">{{ post.title }}</a>
                 </h5>
