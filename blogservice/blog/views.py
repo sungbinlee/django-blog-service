@@ -50,7 +50,7 @@ class CreatePostView(LoginRequiredMixin, View):
 class PostListView(View):
     def get(self, request):
         # 글 목록 조회
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-created_at')
         context = {
             'posts': posts
         }

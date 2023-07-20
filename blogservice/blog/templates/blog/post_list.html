@@ -26,7 +26,7 @@
     {% if posts %}
       <div class="row mt-3">
         {% for post in posts %}
-          <div class="col-md-4 mb-4">
+          <div class="col-md-6 mb-4">
             <div class="card">
               <a href="{% url 'blog:post_detail' post_id=post.id %}">
                 <img src="{% if post.images.first %}{{ post.images.first.file_path.url }}{% else %}{% static 'img/placeholder.jpg' %}{% endif %}" class="card-img-top" alt="{{ post.title }}">
@@ -43,6 +43,9 @@
                   {% for tag in post.tags.all %}
                     <span class="badge bg-primary">{{ tag.name }}</span>
                   {% endfor %}
+                {% else %}
+                  태그:
+                  <span class="badge bg-secondary">없음</span>
                 {% endif %}
               </p>
             </div>
