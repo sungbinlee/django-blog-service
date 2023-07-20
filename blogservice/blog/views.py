@@ -32,8 +32,9 @@ class CreatePostView(LoginRequiredMixin, View):
 
             # 태그 처리
             tags = form.cleaned_data.get('tags')
+            tag_names = [tag.strip() for tag in tags.split(',')]
             if tags:
-                for tag_name in tags:
+                for tag_name in tag_names:
                     tag, _ = Tag.objects.get_or_create(name=tag_name)
                     post.tags.add(tag)
 
