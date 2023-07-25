@@ -15,28 +15,52 @@ Django로 개발된 블로그 서비스입니다.
 
 |          기능           |                                URL                                 | 구현 |
 | :---------------------: | :----------------------------------------------------------------: | ---- |
-|     메인페이지 구현     |                                 /                                  | v    |
-|   회원가입 기능 구현    |                             /register                              | v    |
-|    로그인 기능 구현     |                               /login                               | v    |
-|   로그아웃 기능 구현    |                              /logout                               | v    |
-|  게시글 작성 기능 구현  |                            /blog/write                             | v    |
-|  게시글 목록 기능 구현  |                               /blog                                | v    |
+|     메인페이지     |                                 /                                  | v    |
+|   회원가입 기능    |                             /register                              | v    |
+|    로그인 기능     |                               /login                               | v    |
+|   로그아웃 기능    |                              /logout                               | v    |
+|  게시글 작성 기능  |                            /blog/write                             | v    |
+|  게시글 목록 기능  |                               /blog                                | v    |
 |  게시글 상세보기 기능   |                         /blog/int:post_id                          | v    |
-|  게시글 검색 기능 구현  |                        /blog/search/str:tag                        | v    |
-|  게시글 수정 기능 구현  |                       /blog/edit/int:post_id                       | v    |
-|  게시글 삭제 기능 구현  |                      /blog/delete/int:post_id                      | v    |
-|   댓글 작성 기능 구현   |                  /blog/int:post_id/comment/create                  | v    |
-|   댓글 수정 기능 구현   |           /blog/int:post_id/comment/edit/int:comment_id            | v    |
-|   댓글 삭제 기능 구현   |          /blog/int:post_id/comment/delete/int:comment_id           | v    |
-|  댓글 좋아요 기능 구현  |           /blog/int:post_id/comment/int:comment_id/like            | v    |
-| 게시물 좋아요 기능 구현 |                       /blog/int:post_id/like                       | v    |
-|  대댓글 작성 기능 구현  |       /blog/int:post_id/comment/int:comment_id/reply/create        | v    |
-|  대댓글 수정 기능 구현  |  /blog/int:post_id/comment/int:comment_id/reply/edit/int:reply_id  | v    |
-|  대댓글 삭제 기능 구현  | /blog/int:post_id/comment/int:comment_id/reply/delete/int:reply_id | v    |
+|  게시글 검색 기능  |                        /blog/search/str:tag                        | v    |
+|  게시글 수정 기능  |                       /blog/edit/int:post_id                       | v    |
+|  게시글 삭제 기능  |                      /blog/delete/int:post_id                      | v    |
+|   댓글 작성 기능   |                  /blog/int:post_id/comment/create                  | v    |
+|   댓글 수정 기능  |           /blog/int:post_id/comment/edit/int:comment_id            | v    |
+|   댓글 삭제 기능   |          /blog/int:post_id/comment/delete/int:comment_id           | v    |
+|  댓글 좋아요 기능  |           /blog/int:post_id/comment/int:comment_id/like            | v    |
+| 게시물 좋아요 기능 |                       /blog/int:post_id/like                       | v    |
+|  대댓글 작성 기능  |       /blog/int:post_id/comment/int:comment_id/reply/create        | v    |
+|  대댓글 수정 기능  |  /blog/int:post_id/comment/int:comment_id/reply/edit/int:reply_id  | v    |
+|  대댓글 삭제 기능  | /blog/int:post_id/comment/int:comment_id/reply/delete/int:reply_id | v    |
 |     태그 추가, 삭제     |                                N/A                                 | V    |
 |         조회 수         |                                N/A                                 | V    |
 |        사진 첨부        |                                N/A                                 |  v  |
 |       프로필 설정       |                         profile/update/                             |   v |
+
+## 배포 환경
+배포 환경에는 Nginx + Gunicorn으로 AWS에 Django 애플리케이션을 배포하였습니다. 
+
+### 왜 runserver로 배포하면 안되는가?
+`runserver`는 Django 개발 단계에서 테스트 목적으로 사용하는 간단한 개발용 서버입니다. 실제 운영 환경에서는 다음과 같은 이유로 `runserver`를 사용해서는 안 됩니다:
+
+1. 보안 문제: `runserver`는 간단한 기능만 제공하며 보안에 취약합니다. 운영 환경에서 사용할 경우 보안 위협에 쉽게 노출될 수 있습니다.
+
+2. 성능 문제: `runserver`는 단일 스레드로 동작하여 동시에 여러 요청을 처리하기 어렵습니다. 실제 운영 환경에서는 다수의 요청을 처리해야 하므로 다중 스레드 또는 다중 프로세스로 동작해야 합니다.
+
+3. 스케일링: `runserver`는 단일 프로세스로 동작하여 스케일링이 어렵습니다. 실제 운영 환경에서는 다수의 서버 인스턴스로 확장하여 부하를 분산시키는 것이 필요합니다.
+
+4. 안정성: `runserver`는 개발용이므로 오류가 발생하거나 비정상적인 상태에서도 자동으로 다시 시작되지 않습니다. 반면 실제 운영 환경에서는 안정성을 보장하기 위해 자동 복구 기능이 필요합니다.
+
+### Django + Nginx + Gunicorn으로 배포하기
+Django 애플리케이션을 실제 운영 환경에 배포하기 위해 다음과 같은 구성을 사용합니다:
+
+- Gunicorn: WSGI(Web Server Gateway Interface) 서버로, Django 애플리케이션을 다중 프로세스로 실행하여 동시에 여러 요청을 처리할 수 있도록 합니다.
+
+- Nginx: Reverse Proxy 서버로, 정적 파일 처리와 로드 밸런싱을 담당하여 애플리케이션 서버의 부하를 분산시키고 안정성과 성능을 향상시킵니다.
+
+### 배포 환경의 중요성
+배포 환경은 애플리케이션을 실제 사용자에게 제공하는 단계로, 다수의 사용자가 접속하고 안정성과 성능이 중요한 요소입니다. 실제 운영 환경에서 발생하는 다양한 상황에 대비하여 안정성을 보장하고 성능을 최적화하는 것이 중요합니다. Nginx + Gunicorn과 같은 배포 환경을 구성하여 웹 애플리케이션을 효과적으로 배포하고 운영할 수 있습니다.
 
 ## 이메일 인증 기능
 이메일 인증 기능은 사용자가 회원가입을 진행한 후, 회원가입한 이메일 주소가 유효하고 접근 가능한지 확인하기 위해 사용되는 기능입니다. 이메일 인증이 완료된 사용자만 로그인이 가능하도록 제한할 수 있으며, 이를 통해 사용자의 계정 보안을 강화할 수 있습니다. 이를 위해 다음과 같은 원리로 구현하였습니다:
