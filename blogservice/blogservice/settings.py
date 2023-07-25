@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os 
+import environ
 
 # Custom auth user
 AUTH_USER_MODEL = 'user.User'
@@ -22,12 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Login URL
 LOGIN_URL = '/user/login'
 
+# Envirion setting
+env = environ.Env()
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&((kd1z9fiq3%7i277g+wja^7and_fn+d2rb7jy7n39#zmhf7w'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,10 +49,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # custom apps
     'blog',
     'user',
 ]
 
+# settings.py
+# smpt 
+
+EMAIL = env.json("EMAIL")
+
+EMAIL_BACKEND = EMAIL['EMAIL_BACKEND']
+EMAIL_HOST = EMAIL['EMAIL_HOST']
+EMAIL_PORT = EMAIL['EMAIL_PORT']
+EMAIL_USE_TLS = EMAIL['EMAIL_USE_TLS']  # Set to False if using SSL
+EMAIL_HOST_USER = EMAIL['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = EMAIL['EMAIL_HOST_PASSWORD']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,7 +146,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

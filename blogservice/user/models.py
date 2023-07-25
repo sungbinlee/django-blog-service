@@ -11,7 +11,7 @@ Auth User Model
 
 
 class UserManager(BaseUserManager):
-    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, email, password, is_staff, is_superuser, is_active, **extra_fields):
         if not email:
             raise ValueError('User must have an email')
         now = timezone.localtime()
@@ -19,7 +19,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             is_staff=is_staff,
-            is_active=True,
+            is_active=False,
             is_superuser=is_superuser,
             last_login=now,
             date_joined=now,
@@ -31,10 +31,10 @@ class UserManager(BaseUserManager):
 
     # create_user
     def create_user(self, email, password, **extra_fields):
-        return self._create_user(email, password, False, False, **extra_fields)
+        return self._create_user(email, password, False, False, False **extra_fields)
     # created_superuser
     def create_superuser(self, email, password, **extra_fields):
-        return self._create_user(email, password, True, True, **extra_fields)
+        return self._create_user(email, password, True, True, True,**extra_fields)
 
 
 class User(AbstractUser):
@@ -43,7 +43,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=50, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     last_login = models.DateTimeField(null=True, blank=True)
     data_joined = models.DateTimeField(auto_now_add=True)
     social_provider = models.CharField(max_length=255, blank=True)

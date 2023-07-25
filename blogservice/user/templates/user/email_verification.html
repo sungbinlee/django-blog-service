@@ -1,0 +1,11 @@
+<!-- email_verification.html -->
+
+안녕하세요.<br><br>
+{{ user.name }}님, 아래 링크를 클릭하여 계정을 활성화하세요:
+<br><br>
+
+<a href="{{ protocol }}://{{ domain }}{% url 'user:verify_email' uidb64=uid token=token %}">이메일 인증하기</a>
+<br><br>
+감사합니다,
+<br><br>
+TeamBlog
