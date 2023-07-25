@@ -111,7 +111,17 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-4. 개발 서버를 실행합니다:
+4. 환경변수 파일을 작성합니다. (manage.py와 동일한 위치에)
+```
+vi .env
+```
+```
+#EMAIL={"EMAIL_BACKEND": "django.core.mail.backends.smtp.EmailBackend","EMAIL_USE_TLS": "True","EMAIL_PORT": "587","EMAIL_HOST": "smtp.gmail.com","EMAIL_HOST_USER": "[사용자 계정]","EMAIL_HOST_PASSWORD": "[사용자 비밀번호]"}
+
+SECRET_KEY="[사용자 시크릿 키]"
+```
+
+5. 개발 서버를 실행합니다:
 
 ```
 python manage.py runserver
