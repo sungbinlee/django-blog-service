@@ -62,7 +62,8 @@ class Registration(View):
                     'protocol': 'https' if request.is_secure() else 'http',
                 },
             )
-            send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [user.email])
+            
+            send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [user.email], html_message=message)
 
             return redirect('user:verification_sent')
 
