@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from . import my_settings
 import os 
+import environ
 
 # Custom auth user
 AUTH_USER_MODEL = 'user.User'
@@ -23,12 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Login URL
 LOGIN_URL = '/user/login'
 
+# Envirion setting
+env = environ.Env()
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = my_settings.SECRET_KEY
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,12 +57,14 @@ INSTALLED_APPS = [
 # settings.py
 # smpt 
 
-EMAIL_BACKEND = my_settings.EMAIL['EMAIL_BACKEND']
-EMAIL_HOST = my_settings.EMAIL['EMAIL_HOST']
-EMAIL_PORT = my_settings.EMAIL['EMAIL_PORT']
-EMAIL_USE_TLS = my_settings.EMAIL['EMAIL_USE_TLS']  # Set to False if using SSL
-EMAIL_HOST_USER = my_settings.EMAIL['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = my_settings.EMAIL['EMAIL_HOST_PASSWORD']
+EMAIL = env.json("EMAIL")
+
+EMAIL_BACKEND = EMAIL['EMAIL_BACKEND']
+EMAIL_HOST = EMAIL['EMAIL_HOST']
+EMAIL_PORT = EMAIL['EMAIL_PORT']
+EMAIL_USE_TLS = EMAIL['EMAIL_USE_TLS']  # Set to False if using SSL
+EMAIL_HOST_USER = EMAIL['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = EMAIL['EMAIL_HOST_PASSWORD']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
