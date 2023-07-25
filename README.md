@@ -33,10 +33,12 @@ Django로 개발된 블로그 서비스입니다.
 |  대댓글 작성 기능  |       /blog/int:post_id/comment/int:comment_id/reply/create        | v    |
 |  대댓글 수정 기능  |  /blog/int:post_id/comment/int:comment_id/reply/edit/int:reply_id  | v    |
 |  대댓글 삭제 기능  | /blog/int:post_id/comment/int:comment_id/reply/delete/int:reply_id | v    |
+|       프로필 설정       |                         profile/update/                             |   v |
+|       이메일 발송       |                   verification-sent/                        |   v |
+|       이메일 인증       |                verify-email/<str:uidb64>/<str:token>/                |   v |
 |     태그 추가, 삭제     |                                N/A                                 | V    |
 |         조회 수         |                                N/A                                 | V    |
 |        사진 첨부        |                                N/A                                 |  v  |
-|       프로필 설정       |                         profile/update/                             |   v |
 
 ## 배포 환경
 배포 환경에는 Nginx + Gunicorn으로 AWS에 Django 애플리케이션을 배포하였습니다. 
