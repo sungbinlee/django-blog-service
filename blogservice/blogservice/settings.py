@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from . import my_settings
 import os 
 
 # Custom auth user
@@ -27,7 +28,7 @@ LOGIN_URL = '/user/login'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&((kd1z9fiq3%7i277g+wja^7and_fn+d2rb7jy7n39#zmhf7w'
+SECRET_KEY = my_settings.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,10 +44,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # custom apps
     'blog',
     'user',
 ]
 
+# settings.py
+# smpt 
+
+EMAIL_BACKEND = my_settings.EMAIL['EMAIL_BACKEND']
+EMAIL_HOST = my_settings.EMAIL['EMAIL_HOST']
+EMAIL_PORT = my_settings.EMAIL['EMAIL_PORT']
+EMAIL_USE_TLS = my_settings.EMAIL['EMAIL_USE_TLS']  # Set to False if using SSL
+EMAIL_HOST_USER = my_settings.EMAIL['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = my_settings.EMAIL['EMAIL_HOST_PASSWORD']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
