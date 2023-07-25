@@ -5,7 +5,7 @@ Django로 개발된 블로그 서비스입니다.
 ## Use case diagram
 ![blog_use_case](https://github.com/sungbinlee/django-blog-service/assets/52542229/d2b3ac11-4a17-47f3-a252-cc6189ed0476)
 
-추가기능: 게시글 좋아요, 댓글 좋아요
+추가기능: 게시글 좋아요, 댓글 좋아요, 이메일 인증
 
 ## ER diagram
 
@@ -33,9 +33,9 @@ Django로 개발된 블로그 서비스입니다.
 |  대댓글 작성 기능  |       /blog/int:post_id/comment/int:comment_id/reply/create        | v    |
 |  대댓글 수정 기능  |  /blog/int:post_id/comment/int:comment_id/reply/edit/int:reply_id  | v    |
 |  대댓글 삭제 기능  | /blog/int:post_id/comment/int:comment_id/reply/delete/int:reply_id | v    |
-|       프로필 설정       |                         profile/update/                             |   v |
-|       이메일 발송       |                   verification-sent/                        |   v |
-|       이메일 인증       |                verify-email/<str:uidb64>/<str:token>/                |   v |
+|       프로필 설정       |                         /profile/update/                             |   v |
+|       이메일 발송       |                   /verification-sent/                        |   v |
+|       이메일 인증       |                /verify-email/<str:uidb64>/<str:token>/                |   v |
 |     태그 추가, 삭제     |                                N/A                                 | V    |
 |         조회 수         |                                N/A                                 | V    |
 |        사진 첨부        |                                N/A                                 |  v  |
