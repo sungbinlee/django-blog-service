@@ -129,5 +129,5 @@ python manage.py runserver
 
 서버가 성공적으로 실행되면 브라우저에서 http://localhost:8000/ 으로 접속하여 블로그 웹 애플리케이션을 사용할 수 있습니다.
 
-
-
+## 기술 문서
+기술문서를 참조하려면  [`technical-documentation.pdf`](https://github.com/sungbinlee/django-blog-service/blob/main/technical-documentation.pdf) 파일을 확인해주세요.
