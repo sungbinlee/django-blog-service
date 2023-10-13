@@ -11,6 +11,23 @@ Django로 개발된 블로그 서비스입니다.
 
 ![ERDblog](https://github.com/sungbinlee/django-blog-service/assets/52542229/70aa98f9-7ea9-45e6-854f-766ba31f4c82)
 
+## 🎥 Demo
+| 회원가입 |
+|-----|
+| ![ezgif-3-c719fd923b](https://github.com/sungbinlee/django-blog-service/assets/52542229/f9f79596-d195-4ace-9dfd-4d74a17c9644)|
+| 이메일 인증 |
+|<img width="686" alt="스크린샷 2023-10-13 오후 1 59 50" src="https://github.com/sungbinlee/django-blog-service/assets/52542229/388b0186-3a2d-47c2-8eaf-52e05b9895b4"> |
+| 로그인 |
+|![ezgif-3-c04de768c8](https://github.com/sungbinlee/django-blog-service/assets/52542229/de44be85-b56e-4419-b65a-ae9ac2164643)|
+| 블로그 |
+|![ezgif-3-bd287a80ff](https://github.com/sungbinlee/django-blog-service/assets/52542229/23da3440-fa80-47d7-aad3-b9f23f4a4518)|
+| 검색기능(태그, 제목) |
+| ![ezgif-3-feea1fa9cd](https://github.com/sungbinlee/django-blog-service/assets/52542229/f2efd39b-345b-428a-8e92-b9d674fc9bb1) |
+| 댓글 작성 및 삭제, 좋아요 기능 |
+| ![ezgif-3-086428c532 (1)](https://github.com/sungbinlee/django-blog-service/assets/52542229/eb0c3dfd-43e4-4689-9d8b-19ffc11993e5)|
+| 게시글 작성 및 삭제 |
+| ![ezgif-3-458a1ad1ea](https://github.com/sungbinlee/django-blog-service/assets/52542229/9e560bb3-3129-4230-9d70-b333f22eed38) |
+
 ## 기능 정리
 
 |          기능           |                                URL                                 | 구현 |
