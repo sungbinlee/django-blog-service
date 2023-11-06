@@ -56,7 +56,7 @@ class Registration(View):
                 'user/email_verification.html',
                 {
                     'user': user,
-                    'domain': current_site.domain,
+                    'domain': 'sungbinlee.dev',
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': default_token_generator.make_token(user),
                     'protocol': 'https' if request.is_secure() else 'http',
