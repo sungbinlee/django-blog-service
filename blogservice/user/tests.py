@@ -26,7 +26,7 @@ class LoginTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.login_url = reverse('user:login')
-        self.user = User.objects.create_user(email='testuser@example.com', password='testpassword123', is_staff=False, is_superuser=False,is_active=True)
+        User.objects.create_user(email='testuser@example.com', password='testpassword123', is_staff=False, is_superuser=False,is_active=True)
 
     def test_login_view_get(self):
         response = self.client.get(self.login_url)
@@ -34,13 +34,10 @@ class LoginTestCase(TestCase):
         self.assertTemplateUsed(response, 'user/login.html')
 
     def test_login_view_post_valid_credentials(self):
-        login_data = {
-            'email': 'testuser@example.com',
-            'password': 'testpassword123',
-        }
-        response = self.client.post(self.login_url, login_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-
+        c = Client()
+        response = c.login(email='testuser@example.com', password="testpassword123")
+        self.assertTrue(response)
+        
     def test_login_view_post_invalid_credentials(self):
         login_data = {
             'email': 'testuser@example.com',
