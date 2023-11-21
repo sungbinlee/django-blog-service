@@ -20,16 +20,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.IndexMain.as_view()),
-    path('user/', include('user.urls')),
-    path('blog/', include('blog.urls')),
+    path("admin/", admin.site.urls),
+    path("", views.IndexMain.as_view()),
+    path("user/", include("user.urls")),
+    path("blog/", include("blog.urls")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     import debug_toolbar
+
     urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
+        path("__debug__/", include(debug_toolbar.urls)),
     ]

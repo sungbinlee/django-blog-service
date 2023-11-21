@@ -6,58 +6,75 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('blog', '0001_initial'),
+        ("blog", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="post",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='post',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.category'),
+            model_name="post",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="blog.category"
+            ),
         ),
         migrations.AddField(
-            model_name='post',
-            name='liked_by',
-            field=models.ManyToManyField(blank=True, related_name='liked_posts', to=settings.AUTH_USER_MODEL),
+            model_name="post",
+            name="liked_by",
+            field=models.ManyToManyField(
+                blank=True, related_name="liked_posts", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='post',
-            name='tags',
-            field=models.ManyToManyField(blank=True, to='blog.tag'),
+            model_name="post",
+            name="tags",
+            field=models.ManyToManyField(blank=True, to="blog.tag"),
         ),
         migrations.AddField(
-            model_name='image',
-            name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.post'),
+            model_name="image",
+            name="post",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="blog.post"
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="comment",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='liked_by',
-            field=models.ManyToManyField(related_name='liked_comments', to=settings.AUTH_USER_MODEL),
+            model_name="comment",
+            name="liked_by",
+            field=models.ManyToManyField(
+                related_name="liked_comments", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='parent_comment',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='blog.comment'),
+            model_name="comment",
+            name="parent_comment",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="blog.comment",
+            ),
         ),
         migrations.AddField(
-            model_name='comment',
-            name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.post'),
+            model_name="comment",
+            name="post",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="blog.post"
+            ),
         ),
     ]

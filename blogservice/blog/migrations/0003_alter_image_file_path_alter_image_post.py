@@ -5,20 +5,23 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog', '0002_initial'),
+        ("blog", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='file_path',
-            field=models.ImageField(upload_to='images/'),
+            model_name="image",
+            name="file_path",
+            field=models.ImageField(upload_to="images/"),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='blog.post'),
+            model_name="image",
+            name="post",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="images",
+                to="blog.post",
+            ),
         ),
     ]

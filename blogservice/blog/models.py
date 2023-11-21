@@ -28,15 +28,15 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    liked_by = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    liked_by = models.ManyToManyField(User, related_name="liked_posts", blank=True)
     views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
-    
+
 
 class Image(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
     file_path = models.ImageField(upload_to=uuid_name_upload_to)
 
     def __str__(self):
@@ -45,18 +45,17 @@ class Image(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent_comment = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    liked_by = models.ManyToManyField(User, related_name='liked_comments')
-
+    liked_by = models.ManyToManyField(User, related_name="liked_comments")
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post.title}"
-    
-    
+
+
 class PostTag(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('user', '0002_alter_user_profile_picture'),
+        ("user", "0002_alter_user_profile_picture"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='is_active',
+            model_name="user",
+            name="is_active",
             field=models.BooleanField(default=False),
         ),
     ]
