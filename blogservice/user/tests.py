@@ -53,3 +53,8 @@ class LoginTestCase(TestCase):
         }
         response = self.client.post(self.login_url, login_data)
         self.assertEqual(response.status_code, 200)
+
+    def test_logout_view(self):
+        response = self.client.get(reverse('user:logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse('_auth_user_id' in self.client.session)
