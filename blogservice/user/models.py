@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             is_staff=is_staff,
-            is_active=False,
+            is_active=is_active,
             is_superuser=is_superuser,
             last_login=now,
             date_joined=now,
@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
 
     # create_user
     def create_user(self, email, password, **extra_fields):
-        return self._create_user(email, password, False, False, False**extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
     # created_superuser
     def create_superuser(self, email, password, **extra_fields):
