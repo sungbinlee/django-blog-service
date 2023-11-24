@@ -17,30 +17,38 @@ class CreatePostView(LoginRequiredMixin, View):
         return render(request, "blog/post_create.html", context)
 
     def post(self, request):
-        form = PostForm(request.POST)
-        image_form = ImageForm(request.POST, request.FILES)
+        form, image_form = self.get_forms(request.POST, request.FILES)
         if form.is_valid() and image_form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-
-            if request.FILES.get("file_path"):
-                image = image_form.save(commit=False)
-                image.post = post
-                image.save()
-
-            # 태그 처리
-            tags = form.cleaned_data.get("tags")
-            tag_names = [tag.strip() for tag in tags.split(",")]
-            if tags:
-                for tag_name in tag_names:
-                    tag, _ = Tag.objects.get_or_create(name=tag_name)
-                    post.tags.add(tag)
-
+            post = self.save_post(form, request.user)
+            self.save_image(image_form, post)
+            self.process_tags(form, post)
             return redirect("blog:post_detail", post_id=post.id)
         else:
-            context = {"form": form, "image_form": image_form}
-            return render(request, "blog/post_create.html", context)
+            return render(request, "blog/post_create.html", {"form": form, "image_form": image_form})
+
+    def get_forms(self, *args, **kwargs):
+        form = PostForm(*args)
+        image_form = ImageForm(*args, **kwargs)
+        return form, image_form
+
+    def save_post(self, form, user):
+        post = form.save(commit=False)
+        post.author = user
+        post.save()
+        return post
+
+    def save_image(self, image_form, post):
+        if image_form.cleaned_data.get("file_path"):
+            image = image_form.save(commit=False)
+            image.post = post
+            image.save()
+
+    def process_tags(self, form, post):
+        tags = form.cleaned_data.get("tags")
+        tag_names = [tag.strip() for tag in tags.split(",")]
+        for tag_name in tag_names:
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            post.tags.add(tag)
 
 
 class PostListView(View):
