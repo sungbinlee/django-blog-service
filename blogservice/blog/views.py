@@ -64,8 +64,7 @@ class PostDetailView(View):
     def get(self, request, post_id):
         # 글 상세 조회
         post = get_object_or_404(Post, id=post_id)
-        post.views += 1
-        post.save()
+        self.increment_views(post)
         comment_form = CommentForm()
         context = {
             "post": post,
@@ -73,8 +72,12 @@ class PostDetailView(View):
         }
         return render(request, "blog/post_detail.html", context)
 
+    def increment_views(self, post):
+        post.views += 1
+        post.save()
 
-class PostUpdateView(View):
+
+class PostUpdateView(LoginRequiredMixin, View):
     def get(self, request, post_id):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         cleaned_tags = ", ".join(tag.name for tag in post.tags.all())
@@ -87,26 +90,27 @@ class PostUpdateView(View):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
-            new_post = form.save(commit=False)
-            new_post.save()
-
-            # 태그 업데이트
-            tags = request.POST.get("tags")  # 요청에서 태그 가져오기
-            tag_names = [tag.strip() for tag in tags.split(",")]
-
-            # 기존 태그 삭제 및 새로운 태그 추가
-            new_post.tags.clear()
-            for tag_name in tag_names:
-                tag, _ = Tag.objects.get_or_create(name=tag_name)
-                new_post.tags.add(tag)
-
+            self.save_post(form, request.POST.get("tags"))
             return redirect("blog:post_detail", post_id=post_id)
         else:
             context = {"form": form, "post": post}
             return render(request, "blog/post_update.html", context)
 
+    def save_post(self, form, tags):
+        updated_post = form.save(commit=False)
+        updated_post.save()
+        self.update_tags(updated_post, tags)
+        return updated_post
 
-class PostDeleteView(View):
+    def update_tags(self, post, tags_string):
+        tag_names = [tag.strip() for tag in tags_string.split(",")]
+        post.tags.clear()
+        for tag_name in tag_names:
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            post.tags.add(tag)
+
+
+class PostDeleteView(LoginRequiredMixin, View):
     def get(self, request, post_id):
         post = get_object_or_404(Post, id=post_id, author=request.user)
         context = {"post": post}
@@ -118,29 +122,33 @@ class PostDeleteView(View):
         return redirect("blog:post_list")
 
 
-class CreateCommentView(View):
+class CreateCommentView(LoginRequiredMixin, View):
     def post(self, request, post_id):
         post = Post.objects.get(id=post_id)
         form = CommentForm(request.POST)
+
         if form.is_valid():
-            content = form.cleaned_data["content"]
-            parent_comment_id = request.POST.get(
-                "parent_comment_id"
-            )  # 대댓글인 경우 부모 댓글의 ID를 가져옴
-            if parent_comment_id:
-                parent_comment = Comment.objects.get(id=parent_comment_id)
-                Comment.objects.create(
-                    post=post,
-                    parent_comment=parent_comment,  # 부모 댓글 설정
-                    author=request.user,
-                    content=content,
-                )
-            else:
-                Comment.objects.create(post=post, author=request.user, content=content)
+            self.create_comment(request, post, form)
             return redirect("blog:post_detail", post_id=post.id)
 
+    def create_comment(self, request, post, form):
+        content = form.cleaned_data["content"]
+        parent_comment_id = request.POST.get("parent_comment_id")
 
-class UpdateCommentView(View):
+        comment_data = {
+            "post": post,
+            "author": request.user,
+            "content": content,
+        }
+
+        if parent_comment_id:
+            parent_comment = Comment.objects.get(id=parent_comment_id)
+            comment_data["parent_comment"] = parent_comment
+
+        Comment.objects.create(**comment_data)
+
+
+class UpdateCommentView(LoginRequiredMixin, View):
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         form = CommentForm(request.POST, instance=comment)
@@ -149,7 +157,7 @@ class UpdateCommentView(View):
         return redirect("blog:post_detail", post_id=comment.post.id)
 
 
-class DeleteCommentView(View):
+class DeleteCommentView(LoginRequiredMixin, View):
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         post_id = comment.post.id
