@@ -56,5 +56,6 @@ class LoginTestCase(TestCase):
 
     def test_logout_view(self):
         response = self.client.get(reverse('user:logout'))
+        print(response)
         self.assertEqual(response.status_code, 302)
         self.assertFalse('_auth_user_id' in self.client.session)
